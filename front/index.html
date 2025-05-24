@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Радар</title>
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="map-container">
+            <canvas id="map-canvas"></canvas>
+            
+            <div class="zoom-controls">
+                <button class="zoom-button" id="zoom-in">+</button>
+                <button class="zoom-button" id="zoom-out">−</button>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-marker" style="background-color: #4CAF50;"></div>
+                    <span>Ally</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker" style="background-color: #f44336;"></div>
+                    <span>Enemy</span>
+                </div>
+            </div>
+
+            <div class="header">
+                <div class="connection-status">
+                    <span class="status-indicator status-disconnected"></span>
+                    <span id="status-text">Disconnected</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <h3>Display filters</h3>
+                    <div class="control-item custom-checkbox">
+                        <input type="checkbox" id="show-allies" checked>
+                        <label for="show-allies">Show teammates</label>
+                    </div>
+                    <div class="control-item custom-checkbox">
+                        <input type="checkbox" id="show-enemies" checked>
+                        <label for="show-enemies">Show enemies</label>
+                    </div>
+                    <div class="control-item custom-checkbox">
+                        <input type="checkbox" id="show-self" checked>
+                        <label for="show-self">Show self</label>
+                    </div>
+                    <div class="control-item custom-checkbox">
+                        <input type="checkbox" id="show-dead" checked>
+                        <label for="show-dead">Show dead</label>
+                    </div>
+                    <!-- <div class="control-item">
+                        <input type="checkbox" id="show-items" checked>
+                        <label for="show-items">Show items</label>
+                    </div> -->
+                </div>
+                
+                <div class="control-group">
+                    <h3>Settings</h3>
+                    <!-- <div class="control-item">
+                        <input type="checkbox" id="auto-center">
+                        <label for="auto-center">Автоцентрирование</label>
+                    </div> -->
+                    <div class="control-item">
+                        <input type="range" id="marker-size" min="1" max="20" value="10">
+                        <label for="marker-size">Markers Size</label>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3>Info</h3>
+                    <div id="player-count">Players on map: 0</div>
+                    <div id="team-breakdown">Allies: 0 | Enemies 2: 0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/radar.js"></script>
+</body>
+</html>

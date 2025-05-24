@@ -1,0 +1,196 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111111;
+    color: #eee;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background-color: rgba(36, 36, 36, 0.712);
+    backdrop-filter: blur(36px);
+    width: 100%;
+    /* border-bottom: 1px solid #333; */
+}
+
+.map-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.map-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.map-button.active {
+    background-color: #4CAF50;
+}
+
+.connection-status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #333;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.status-connected {
+    background-color: #4CAF50;
+}
+
+.status-disconnected {
+    background-color: #f44336;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.map-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background-color: #222;
+}
+
+canvas {
+    display: block;
+    position: absolute;
+    cursor: move;
+}
+
+.controls {
+    width: 250px;
+    background-color: rgba(36, 36, 36, 0.712);
+    backdrop-filter: blur(36px);
+    height: 100%;
+    border-left: 1px solid #333;
+    padding: 10px;
+    overflow-y: auto;
+    right: 0;
+    position: absolute;
+    top: 3.75em;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #ccc;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.control-item label {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.zoom-button {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    background-color: rgba(36, 36, 36, 0.712);
+    backdrop-filter: blur(36px);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    background-color: rgba(36, 36, 36, 0.712);
+    backdrop-filter: blur(36px);
+    padding: 0.75em;
+    border-radius: 3px;
+    font-size: 14pt;
+    gap: 0.5em;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.legend-marker {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .controls {
+        width: 100%;
+        height: 200px;
+        border-left: none;
+        border-top: 1px solid #333;
+    }
+    
+    .map-selector {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 5px;
+        width: 70%;
+    }
+    
+    .connection-status {
+        font-size: 12px;
+    }
+}
