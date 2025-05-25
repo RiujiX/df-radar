@@ -15,18 +15,20 @@ app.mount("/df", StaticFiles(directory="../front", html=True), name="static")
 
 @app.post("/api/df/game-data/{root_nickname}")
 async def receive_game_data(root_nickname: str, data: dict):
+    print(f"Recieved data: {data}")
     if not data.get("update_type", None): return PlainTextResponse("BAD_REQUEST", 400)
     if data.get("update_type") == "PING": return PlainTextResponse("PONG", 200)
-
-    broadcasted_data = {
-        "type": "game_update",
-        "data": data
-    }
-    print(f'Broadcasting: {broadcasted_data}')
     await manager.broadcast_to_viewers(root_nickname, {
         "type": "game_update",
         "data": data
     })
+
+@app.get("/api/df/{root_nickname}/current_map")
+async def get_current_map(root_nickname: str):
+    if root_nickname not in manager.root_latest_known_map.keys(): 
+        return PlainTextResponse("offline", 200)
+    
+    return PlainTextResponse(manager.root_latest_known_map[root_nickname])
 
 @app.websocket("/api/ws/view-df/{root_nickname}")
 async def websocket_endpoint(websocket: WebSocket, root_nickname: str):

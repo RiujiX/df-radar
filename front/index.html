@@ -17,13 +17,38 @@
             </div>
             
             <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-marker" style="background-color: #4CAF50;"></div>
-                    <span>Ally</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-marker" style="background-color: #f44336;"></div>
-                    <span>Enemy</span>
+                <div class="legend-section">
+                    <h4>Players</h4>
+                    <div class="legend-item">
+                        <div class="legend-icon">
+                            <img src="assets/markers/self.svg" alt="Self" width="20" height="15">
+                        </div>
+                        <span>Root</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon">
+                            <img src="assets/markers/ally.svg" alt="Ally" width="20" height="15">
+                        </div>
+                        <span>Ally</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon">
+                            <img src="assets/markers/enemy.svg" alt="Enemy Alive" width="20" height="15">
+                        </div>
+                        <span>Enemy</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon">
+                            <img src="assets/markers/injured.svg" alt="Enemy Injured" width="16" height="16">
+                        </div>
+                        <span>Injured</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon">
+                            <img src="assets/markers/boxed.svg" alt="Enemy Deadboxed" width="16" height="16">
+                        </div>
+                        <span>Deadboxed</span>
+                    </div>
                 </div>
             </div>
 
@@ -53,18 +78,10 @@
                         <input type="checkbox" id="show-dead" checked>
                         <label for="show-dead">Show dead</label>
                     </div>
-                    <!-- <div class="control-item">
-                        <input type="checkbox" id="show-items" checked>
-                        <label for="show-items">Show items</label>
-                    </div> -->
                 </div>
                 
                 <div class="control-group">
                     <h3>Settings</h3>
-                    <!-- <div class="control-item">
-                        <input type="checkbox" id="auto-center">
-                        <label for="auto-center">Автоцентрирование</label>
-                    </div> -->
                     <div class="control-item">
                         <input type="range" id="marker-size" min="1" max="20" value="10">
                         <label for="marker-size">Markers Size</label>
@@ -74,7 +91,7 @@
                 <div class="control-group">
                     <h3>Info</h3>
                     <div id="player-count">Players on map: 0</div>
-                    <div id="team-breakdown">Allies: 0 | Enemies 2: 0</div>
+                    <div id="team-breakdown">Allies: 0 | Enemies: 0</div>
                 </div>
             </div>
         </div>

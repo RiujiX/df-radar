@@ -158,8 +158,20 @@ canvas {
     gap: 0.5em;
 }
 
+.legend-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5pt;
+}
+
+.legend-icon {
+    min-width: 1.25em;
+}
+
 .legend-item {
     display: flex;
+    gap: 8pt;
     align-items: center;
 }
 
