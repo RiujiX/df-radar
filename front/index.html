@@ -18,7 +18,6 @@
             
             <div class="legend">
                 <div class="legend-section">
-                    <h4>Players</h4>
                     <div class="legend-item">
                         <div class="legend-icon">
                             <img src="assets/markers/self.svg" alt="Self" width="20" height="15">
@@ -55,13 +54,17 @@
             <div class="header">
                 <div class="connection-status">
                     <span class="status-indicator status-disconnected"></span>
-                    <span id="status-text">Disconnected</span>
+                    <span id="status-text">DISCONNECTED</span>
                 </div>
+                <button class="menu-toggle" id="menu-toggle">☰</button>
             </div>
 
-            <div class="controls">
+            <div class="controls" id="controls">
+                <div id="hide-button">
+                    <span class="chevron">&rsaquo;</span>
+                </div>
                 <div class="control-group">
-                    <h3>Display filters</h3>
+                    <h3>DISPLAY FILTERS</h3>
                     <div class="control-item custom-checkbox">
                         <input type="checkbox" id="show-allies" checked>
                         <label for="show-allies">Show teammates</label>
@@ -81,22 +84,26 @@
                 </div>
                 
                 <div class="control-group">
-                    <h3>Settings</h3>
-                    <div class="control-item">
-                        <input type="range" id="marker-size" min="1" max="20" value="10">
+                    <h3>SETTINGS</h3>
+                    <div class="control-item slider-container">
                         <label for="marker-size">Markers Size</label>
+                        <input type="range" id="marker-size" class="custom-slider" min="1" max="200" value="100">
                     </div>
                 </div>
                 
-                <div class="control-group">
-                    <h3>Info</h3>
-                    <div id="player-count">Players on map: 0</div>
-                    <div id="team-breakdown">Allies: 0 | Enemies: 0</div>
+                <div class="control-group info-group">
+                    <h3>SETTINGS</h3>
+                    <div class="info-section">
+                        <div id="player-count">Players on map: 0</div>
+                        <div id="team-breakdown">Allies: 0 | Enemies: 0</div>
+                    </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
     <script src="scripts/radar.js"></script>
+    <script src="scripts/ui.js"></script>
 </body>
 </html>

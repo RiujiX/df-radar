@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Delta Force';
+  src: url('assets/fonts/DELTA FORCE.ttf') format('truetype');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +16,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .header {
@@ -22,31 +28,20 @@ body {
     background-color: rgba(36, 36, 36, 0.712);
     backdrop-filter: blur(36px);
     width: 100%;
-    /* border-bottom: 1px solid #333; */
-}
-
-.map-selector {
-    display: flex;
-    gap: 10px;
-}
-
-.map-button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.map-button.active {
-    background-color: #4CAF50;
+    z-index: 1000;
+    letter-spacing: 1pt;
+    font-family: 'Delta Force', sans-serif;
+    font-weight: 400;
+    border-bottom: 1px solid #333333a1;
 }
 
 .connection-status {
     padding: 5px 10px;
     border-radius: 4px;
     background-color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .status-indicator {
@@ -54,7 +49,6 @@ body {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    margin-right: 5px;
 }
 
 .status-connected {
@@ -63,6 +57,16 @@ body {
 
 .status-disconnected {
     background-color: #f44336;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #eee;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
 }
 
 .main-container {
@@ -85,37 +89,141 @@ canvas {
 }
 
 .controls {
-    width: 250px;
+    display: flex;
+    padding-top: 10pt;
+    align-items: center;
+    flex-direction: column;
+
+    transition: width .3s ease 0s;
+    width: 280px;
     background-color: rgba(36, 36, 36, 0.712);
     backdrop-filter: blur(36px);
     height: 100%;
-    border-left: 1px solid #333;
-    padding: 10px;
-    overflow-y: auto;
+    border-left: 1px solid #333333a1;
     right: 0;
     position: absolute;
-    top: 3.75em;
+    top: 60px;
+
+    letter-spacing: 1pt;
+    font-family: 'Delta Force', sans-serif;
+    font-weight: 400;
 }
 
-.control-group {
-    margin-bottom: 15px;
+.controls.collapsed {
+    transition: width .3s ease .3s;
+    width: 1.25em;
+}
+
+.controls.collapsed > .control-group {
+    transition: opacity .3s ease 0s;
+    opacity: 0;
+}
+
+.controls:not(.collapsed) > .control-group {
+    transition: opacity .3s ease .3s;
+    opacity: 1;
+}
+
+.controls > .control-group {
+    opacity: 1;
+    margin-bottom: 3em;
+    width: 90%;
 }
 
 .control-group h3 {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     color: #ccc;
+    font-weight: 600;
 }
 
 .control-item {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-.control-item label {
-    margin-left: 8px;
+.custom-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.custom-checkbox input[type="checkbox"]:hover {
+    scale: 1.12;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ffffffce;
+  border-radius: 2px;
+  background-color: transparent;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: background-color 0.2s;
+}
+
+.custom-checkbox input[type="checkbox"]::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background-color: #ffffffce;
+  border-radius: 1px;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
+}
+
+.custom-checkbox input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.slider-container label {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.custom-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #333;
+    outline: none;
     cursor: pointer;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid #666;
+}
+
+.custom-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid #666;
 }
 
 .zoom-controls {
@@ -156,6 +264,9 @@ canvas {
     border-radius: 3px;
     font-size: 14pt;
     gap: 0.5em;
+    letter-spacing: 1pt;
+    font-family: 'Delta Force', sans-serif;
+    font-weight: 400;
 }
 
 .legend-section {
@@ -175,34 +286,182 @@ canvas {
     align-items: center;
 }
 
-.legend-marker {
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    margin-right: 8px;
+/* Info */
+.info-group {
+  margin-top: 20px;
+  color: #fff;
+  /* font-family: sans-serif; */
 }
 
-/* Мобильная версия */
+.info-group h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffffd0;
+  border-bottom: 1px solid #ffffff30;
+  padding-bottom: 4px;
+}
+
+.info-section {
+  background-color: #1a1a1a;
+  border: 1px solid #ffffff25;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 4px #00000040;
+}
+
+#hide-button {
+  width: 16px;
+  height: 48px;
+  position: absolute;
+  left: -16px; /* прижата к левому краю сайдбара */
+  top: 50%;
+  transform: translateY(-50%);
+  background: #3a3a3a;
+  border-radius: 4px 0 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+#hide-button:hover {
+  background: #4a4a4a;
+}
+
+.chevron {
+  color: white;
+  font-size: 20pt;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+#hide-button.collapsed .chevron {
+  transform: rotate(180deg);
+}
+
+#hide-button.collapsed .chevron {
+  transform: rotate(0deg);
+}
+
 @media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
+    .header {
+        padding: 0.5em 1em;
+        height: 50px;
     }
-    
-    .controls {
-        width: 100%;
-        height: 200px;
-        border-left: none;
-        border-top: 1px solid #333;
-    }
-    
-    .map-selector {
-        overflow-x: auto;
-        white-space: nowrap;
-        padding-bottom: 5px;
-        width: 70%;
-    }
-    
+
     .connection-status {
         font-size: 12px;
+        padding: 3px 8px;
+    }
+
+    .status-indicator {
+        width: 8px;
+        height: 8px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .controls {
+        width: 100%;
+        height: calc(100vh - 50px);
+        top: 50px;
+        left: 0;
+        right: auto;
+        border-left: none;
+        border-top: 1px solid #333;
+        padding: 10px;
+        transform: translateX(100%);
+    }
+
+    .controls.open {
+        transform: translateX(0);
+    }
+
+    .legend {
+        font-size: 10pt;
+        padding: 0.5em;
+        bottom: 0.5em;
+        left: 0.5em;
+        max-width: calc(50% - 1em);
+    }
+
+    .legend h4 {
+        font-size: 11px;
+        margin-bottom: 3px;
+    }
+
+    .legend-item {
+        gap: 4pt;
+        font-size: 10px;
+    }
+
+    .legend-icon img {
+        width: 12px !important;
+        height: 12px !important;
+    }
+
+    .zoom-controls {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .zoom-button {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .control-group {
+        margin-bottom: 20px;
+    }
+
+    .control-group h3 {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .custom-checkbox label {
+        font-size: 13px;
+    }
+
+    .info-section {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 0.3em 0.8em;
+        height: 45px;
+    }
+
+    .controls {
+        top: 45px;
+        height: calc(100vh - 45px);
+    }
+
+    .legend {
+        font-size: 9pt;
+        padding: 0.4em;
+        max-width: calc(45% - 0.5em);
+    }
+
+    .legend-item {
+        font-size: 9px;
+    }
+
+    .legend-icon img {
+        width: 10px !important;
+        height: 10px !important;
     }
 }

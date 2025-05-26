@@ -8,7 +8,7 @@ let isDragging = false;
 let lastX, lastY;
 let mapImage = new Image();
 let players = [];
-let currentMap = 'zerodam';
+let currentMap = 'offline';
 let socket = null;
 
 // Player icons
@@ -41,6 +41,8 @@ function loadMap(mapName) {
         mapName = "standby";
         currentMap = "standby";
         players = [];
+    } else {
+        currentMap = mapName;
     }
     
     const img_ext = (mapName === "offline" || mapName === "standby") ? "svg" : "webp";
@@ -56,15 +58,19 @@ function loadMap(mapName) {
 
 // Center map on load
 function centerMap() {
+    const headerHeight = document.querySelector(".header");
+    if (currentMap === "offline" || currentMap === "standby")
+        scale = (canvas.height - (headerHeight.clientHeight)) / (mapImage.naturalWidth * 13)
+
     const imgWidth = (currentMap === "offline" || currentMap === "standby") 
-        ? canvas.height 
+        ? mapImage.naturalWidth * scale * 12
         : mapImage.naturalWidth * scale;
     const imgHeight = (currentMap === "offline" || currentMap === "standby") 
-        ? canvas.height 
+        ? mapImage.naturalHeight * scale * 12
         : mapImage.naturalHeight * scale;
-    
+
     offsetX = (canvas.width - imgWidth) / 2;
-    offsetY = (canvas.height - imgHeight) / 2;
+    offsetY = (canvas.height - imgHeight + ((currentMap === "offline" || currentMap === "standby") ? headerHeight.clientHeight : 0)) / 2
 }
 
 // Main redraw function
@@ -80,10 +86,10 @@ function redraw() {
 
 function drawMap() {
     const imgWidth = (currentMap === "offline" || currentMap === "standby") 
-        ? canvas.height 
+        ? mapImage.naturalWidth * scale * 12
         : mapImage.naturalWidth * scale;
     const imgHeight = (currentMap === "offline" || currentMap === "standby") 
-        ? canvas.height 
+        ? mapImage.naturalHeight * scale * 12
         : mapImage.naturalHeight * scale;
 
     ctx.drawImage(mapImage, offsetX, offsetY, imgWidth, imgHeight);
@@ -95,7 +101,7 @@ function drawPlayers() {
     const showEnemies = document.getElementById('show-enemies').checked;
     const showSelf = document.getElementById('show-self').checked;
     const showDead = document.getElementById('show-dead').checked;
-    const markerSize = parseInt(document.getElementById('marker-size').value);
+    const markerSize = parseInt(document.getElementById('marker-size').value) / 10;
     
     players.forEach(player => {
         // Apply filters
@@ -280,11 +286,11 @@ function updateConnectionStatus(isConnected) {
     if (isConnected) {
         statusIndicator.classList.remove('status-disconnected');
         statusIndicator.classList.add('status-connected');
-        statusText.textContent = 'Connected';
+        statusText.textContent = 'CONNECTED';
     } else {
         statusIndicator.classList.remove('status-connected');
         statusIndicator.classList.add('status-disconnected');
-        statusText.textContent = 'Disconnected';
+        statusText.textContent = 'DISCONNECTED';
     }
 }
 
@@ -554,15 +560,16 @@ async function init() {
 
     const map = await getCurrentMap(rootNickname);
 
+    // loadMap('zerodam')
     loadMap(map);
     initWebSocket(rootNickname);
     setupEventHandlers();
-    trackCursorCoordinates();
+    // trackCursorCoordinates();
     
-    // Demo data
-    players = [
-        { name: 'Player 1', pos: {x: -48000, y: -48000}, team: 'ally', status: 'alive', is_self: true, yaw: 45 }
-    ];
+    // // Demo data
+    // players = [
+    //     { name: 'Player 1', pos: {x: -48000, y: -48000}, team: 'ally', status: 'alive', is_self: true, yaw: 45 }
+    // ];
 }
 
 // Start application
