@@ -4,7 +4,6 @@ from fastapi import WebSocket
 
 class ConnectionManager:
     def __init__(self):
-        # Только подключения зрителей (получают данные)
         self.viewer_connections: Dict[str, List[WebSocket]] = {}
         self.root_latest_known_map: Dict[str, str] = {}
 
@@ -31,7 +30,6 @@ class ConnectionManager:
                 except:
                     disconnected.append(connection)
             
-            # Удаляем отключенные соединения
             for conn in disconnected:
                 self.viewer_connections[root_nickname].remove(conn)
 

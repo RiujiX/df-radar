@@ -351,20 +351,20 @@ canvas {
   transform: rotate(0deg);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .header {
         padding: 0.5em 1em;
         height: 50px;
     }
 
     .connection-status {
-        font-size: 12px;
-        padding: 3px 8px;
+        font-size: 13px;
+        padding: 4px 8px;
     }
 
     .status-indicator {
-        width: 8px;
-        height: 8px;
+        width: 9px;
+        height: 9px;
     }
 
     .menu-toggle {
@@ -379,12 +379,34 @@ canvas {
         right: auto;
         border-left: none;
         border-top: 1px solid #333;
-        padding: 10px;
+        padding: 10px 12px;
         transform: translateX(100%);
+        transition: transform 0.3s ease;
     }
 
     .controls.open {
         transform: translateX(0);
+    }
+
+    .control-group {
+        margin-bottom: 1.5em;
+        width: 100%;
+    }
+
+    .control-group h3 {
+        font-size: 15px;
+    }
+
+    .custom-checkbox label {
+        font-size: 13px;
+    }
+
+    .slider-container label {
+        font-size: 13px;
+    }
+
+    .custom-slider {
+        height: 5px;
     }
 
     .legend {
@@ -392,76 +414,48 @@ canvas {
         padding: 0.5em;
         bottom: 0.5em;
         left: 0.5em;
-        max-width: calc(50% - 1em);
-    }
-
-    .legend h4 {
-        font-size: 11px;
-        margin-bottom: 3px;
+        max-width: 60%;
     }
 
     .legend-item {
-        gap: 4pt;
-        font-size: 10px;
+        font-size: 11px;
+        gap: 6pt;
     }
 
     .legend-icon img {
-        width: 12px !important;
-        height: 12px !important;
+        width: 14px !important;
+        height: 14px !important;
     }
 
     .zoom-controls {
-        bottom: 10px;
-        right: 10px;
+        bottom: 12px;
+        right: 12px;
+        gap: 4px;
     }
 
     .zoom-button {
-        width: 35px;
-        height: 35px;
+        width: 36px;
+        height: 36px;
         font-size: 18px;
     }
 
-    .control-group {
-        margin-bottom: 20px;
-    }
-
-    .control-group h3 {
-        font-size: 15px;
-        margin-bottom: 10px;
-    }
-
-    .custom-checkbox label {
+    .info-section {
         font-size: 13px;
     }
 
-    .info-section {
-        font-size: 12px;
+    #hide-button {
+        left: -14px;
+        width: 14px;
+        height: 40px;
+    }
+
+    .chevron {
+        font-size: 18pt;
     }
 }
 
-@media (max-width: 480px) {
-    .header {
-        padding: 0.3em 0.8em;
-        height: 45px;
-    }
-
-    .controls {
-        top: 45px;
-        height: calc(100vh - 45px);
-    }
-
-    .legend {
-        font-size: 9pt;
-        padding: 0.4em;
-        max-width: calc(45% - 0.5em);
-    }
-
-    .legend-item {
-        font-size: 9px;
-    }
-
-    .legend-icon img {
-        width: 10px !important;
-        height: 10px !important;
-    }
+@media (max-width: 768px) {
+   .controls {
+    display: none;
+   }
 }
