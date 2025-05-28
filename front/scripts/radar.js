@@ -375,10 +375,10 @@ function setupTouchEvents() {
         if (isDragging && e.touches.length === 1) {
             const deltaX = e.touches[0].clientX - lastX;
             const deltaY = e.touches[0].clientY - lastY;
-            
+
             offsetX += deltaX;
             offsetY += deltaY;
-            
+
             lastX = e.touches[0].clientX;
             lastY = e.touches[0].clientY;
             redraw();
@@ -388,10 +388,16 @@ function setupTouchEvents() {
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
             const currentTouchDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-            
-            const zoomFactor = currentTouchDistance / lastTouchDistance;
-            smoothZoom(scale * zoomFactor, touchCenterX, touchCenterY);
-            
+
+            // Увеличим чувствительность зума (в 1.5 раза быстрее)
+            const rawZoomFactor = currentTouchDistance / lastTouchDistance;
+            const zoomFactor = Math.pow(rawZoomFactor, 1.5); // быстрее, но не резко
+
+            let newScale = scale * zoomFactor;
+            newScale = Math.max(0.1, newScale); // ограничиваем минимальный зум
+
+            smoothZoom(newScale, touchCenterX, touchCenterY);
+
             lastTouchDistance = currentTouchDistance;
         }
     });
