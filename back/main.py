@@ -40,6 +40,7 @@ async def receive_game_data(request: Request, root_nickname: str, data: dict):
 
     if not data.get("update_type", None): return PlainTextResponse("BAD_REQUEST", status.HTTP_400_BAD_REQUEST)
     if data.get("update_type") == "PING": return PlainTextResponse("PONG", status.HTTP_200_OK)
+    
     await manager.broadcast_to_viewers(root_nickname, {
         "type": "game_update",
         "data": data

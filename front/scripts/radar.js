@@ -17,7 +17,8 @@ const playerIcons = {
     ally: new Image(),
     self: new Image(),
     injured: new Image(),
-    boxed: new Image()
+    boxed: new Image(),
+    escaped: new Image()
 };
 
 // Load icons
@@ -26,6 +27,7 @@ playerIcons.ally.src = 'assets/markers/ally.svg';
 playerIcons.self.src = 'assets/markers/self.svg';
 playerIcons.injured.src = 'assets/markers/injured.svg';
 playerIcons.boxed.src = 'assets/markers/boxed.svg';
+playerIcons.escaped.src = 'assets/markers/escaped.svg';
 
 // Canvas initialization
 function resizeCanvas() {
@@ -109,8 +111,19 @@ function drawPlayers() {
             return;
         }
         
+        // Declare canvas coordinates
+        let canvasX, canvasY;
+
         // Convert world coordinates to canvas coordinates
-        const { x: canvasX, y: canvasY } = map1.worldToCanvas(player.pos.x, player.pos.y);
+        if (currentMap === "zerodam") {
+            ({ x: canvasX, y: canvasY } = map1.worldToCanvas(player.pos.x, player.pos.y));
+        } else if (currentMap === "layaligrove") {
+            ({ x: canvasX, y: canvasY } = map2.worldToCanvas(player.pos.x, player.pos.y));
+        } else if (currentMap === "spacecity") {
+            ({ x: canvasX, y: canvasY } = map3.worldToCanvas(player.pos.x, player.pos.y));
+        } else {
+            ({ x: canvasX, y: canvasY } = map1.worldToCanvas(player.pos.x, player.pos.y));
+        }
         
         // Draw player marker
         drawPlayerMarker(player, canvasX, canvasY, markerSize);
@@ -122,7 +135,7 @@ function drawPlayers() {
 
 function shouldShowPlayer(player, showAllies, showEnemies, showSelf, showDead) {
     if (player.is_self && !showSelf) return false;
-    if (player.team === 'ally' && !showAllies) return false;
+    if (player.team === 'ally' && !showAllies && !player.is_self) return false;
     if (player.team === 'enemy' && !showEnemies) return false;
     if (player.status === 'deadboxed' && !showDead) return false;
     return true;
@@ -131,7 +144,7 @@ function shouldShowPlayer(player, showAllies, showEnemies, showSelf, showDead) {
 function drawPlayerMarker(player, canvasX, canvasY, markerSize) {
     const icon = getPlayerIcon(player);
     const baseSize = markerSize * 2;
-    const opacity = player.status === 'deadboxed' ? 0.5 : 1.0;
+    const opacity = player.status === 'deadboxed' || player.status === 'escaped' ? 0.5 : 1.0;
     
     ctx.globalAlpha = opacity;
     
@@ -171,6 +184,7 @@ function getPlayerIcon(player) {
     
     // Enemy icons based on status
     switch (player.status) {
+        case 'escaped': return playerIcons.escaped;
         case 'deadboxed': return playerIcons.boxed;
         case 'injured': return playerIcons.injured;
         case 'alive': return playerIcons.alive;
@@ -389,12 +403,10 @@ function setupTouchEvents() {
             const touch2 = e.touches[1];
             const currentTouchDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
 
-            // Увеличим чувствительность зума (в 1.5 раза быстрее)
             const rawZoomFactor = currentTouchDistance / lastTouchDistance;
-            const zoomFactor = Math.pow(rawZoomFactor, 1.5); // быстрее, но не резко
-
+            const zoomFactor = Math.pow(rawZoomFactor, 3);
             let newScale = scale * zoomFactor;
-            newScale = Math.max(0.1, newScale); // ограничиваем минимальный зум
+            newScale = Math.max(0.1, newScale);
 
             smoothZoom(newScale, touchCenterX, touchCenterY);
 
@@ -503,6 +515,19 @@ const map1 = new MapConverter(
     -21573.45, -25095.97, 1738, 1072
 );
 
+// layali
+const map2 = new MapConverter(
+    -47918.77, -2767.52, 2491, 1370,
+    -49800.83, -2608.49, 2490, 1333
+);
+
+//spacecity
+const map3 = new MapConverter(
+    -15741, -21420, 1803, 1381,
+    -14654, -22386, 1843, 1345
+);
+
+
 // Cursor coordinates tracking
 function trackCursorCoordinates() {
     let coordDisplay = document.getElementById('cursor-coords');
@@ -566,16 +591,16 @@ async function init() {
 
     const map = await getCurrentMap(rootNickname);
 
-    // loadMap('zerodam')
+    // loadMap('spacecity')
     loadMap(map);
     initWebSocket(rootNickname);
     setupEventHandlers();
-    // trackCursorCoordinates();
+    trackCursorCoordinates();
     
     // // Demo data
-    // players = [
-    //     { name: 'Player 1', pos: {x: -48000, y: -48000}, team: 'ally', status: 'alive', is_self: true, yaw: 45 }
-    // ];
+    players = [
+        { name: 'Player 1', pos: {x: -13765, y: -23206}, team: 'ally', status: 'alive', is_self: true, yaw: 45 }
+    ];
 }
 
 // Start application
