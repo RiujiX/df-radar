@@ -31,21 +31,31 @@ async def serve_radar(root_nickname: str):
 app.mount("/df", StaticFiles(directory="../front", html=True), name="static")
 
 @app.post("/api/df/game-data/{root_nickname}")
-async def receive_game_data(request: Request, root_nickname: str, data: dict):
+async def receive_game_data(request: Request, root_nickname: str):
+    try:
+        data = await request.json()
+    except Exception:
+        return PlainTextResponse("BAD_JSON", status.HTTP_400_BAD_REQUEST)
+
     if request.client.host not in ("127.0.0.1", "localhost") and request.client.host not in HANDSHAKE_CACHE.keys():
         if data.get("PERCEPTION_HANDSHAKE", "") != HANDSHAKE_KEY:
             return PlainTextResponse("FORBIDDEN", status.HTTP_403_FORBIDDEN)
         else:
             HANDSHAKE_CACHE[request.client.host] = "HANDSHAKED"
 
-    if not data.get("update_type", None): return PlainTextResponse("BAD_REQUEST", status.HTTP_400_BAD_REQUEST)
-    if data.get("update_type") == "PING": return PlainTextResponse("PONG", status.HTTP_200_OK)
-    
+    if not data.get("update_type"):
+        return PlainTextResponse("BAD_REQUEST", status.HTTP_400_BAD_REQUEST)
+
+    if data["update_type"] == "PING":
+        return PlainTextResponse("PONG", status.HTTP_200_OK)
+
     await manager.broadcast_to_viewers(root_nickname, {
         "type": "game_update",
         "data": data
     })
 
+    return PlainTextResponse("OK", status.HTTP_200_OK)
+    
 @app.get("/api/df/{root_nickname}/current_map")
 async def get_current_map(root_nickname: str):
     if root_nickname not in manager.root_latest_known_map.keys(): 
